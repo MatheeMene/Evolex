@@ -19,6 +19,10 @@ target 'Evolex' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'react-native-voice', :path => '../node_modules/@react-native-community/voice'
+
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'EvolexTests' do
     inherit! :complete
     # Pods for testing

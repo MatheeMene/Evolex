@@ -3,17 +3,19 @@ import { Image, StyleSheet, Text } from 'react-native';
 
 import { BackgroundImageDefault } from '../Home/styles';
 import { InstructionContainer, ExplanationText, StartGameButton } from './styles';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 interface InstructionsScreenProps {
     route: {
         params: {
             explanationText: string;
             nextScreen: string;
+            icon?: string;
         }
     };
     navigation: {
         navigate: Function
-    }
+    },
 };
 
 const styles = StyleSheet.create({
@@ -26,13 +28,16 @@ const styles = StyleSheet.create({
 });
 
 const InstructionsScreen: React.FC<InstructionsScreenProps> = ({ route, navigation }) => {
-    const { params: { nextScreen } } = route;
+    const { params: { nextScreen, icon } } = route;
 
     return (
         //@ts-ignore
         <BackgroundImageDefault source={require('../../assets/home_cloud.jpg')}>
             <InstructionContainer>
-                <Image source={require('../../assets/airplane.webp')} style={styles.airplaneImage} />
+                {icon
+                    ? <Icon name={icon} size={150} color='green' />
+                    : <Image source={require('../../assets/airplane.webp')} style={styles.airplaneImage} />
+                }
                 <ExplanationText>{route.params.explanationText}</ExplanationText>
                 <StartGameButton onPress={() => {
                     navigation.navigate({

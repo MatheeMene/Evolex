@@ -20,6 +20,14 @@ const styles = StyleSheet.create({
         textShadowOffset: { width: -1, height: 1 },
         textShadowRadius: 5,
     },
+    incorrectWord: {
+        fontSize: 14,
+        width: 200,
+        color: 'white',
+        textAlign: 'center',
+        letterSpacing: 3,
+        textTransform: 'uppercase',
+    },
 });
 
 interface SpeakGameProps {
@@ -33,18 +41,18 @@ const SpeakGame: React.FC<SpeakGameProps> = ({ navigation }) => {
     const [result, setResult] = useState<string>('');
     const [isLoading, setLoading] = useState<boolean>(false);
     const [isCorrect, setIsCorrect] = useState<boolean>(false);
-    const [wordCounter, setWordCounter] = useState<number>(2);
+    const [wordCounter, setWordCounter] = useState<number>(0);
     const [wrongWord, setWrongWord] = useState<boolean>(false);
 
     const { words } = Words;
 
     const onSpeechStartHandler = (event: any) => {
-        console.log("start handler==>>>", event)
+        console.log("start handler==>>>", event);
     };
 
     const onSpeechEndHandler = (event: any) => {
-        setLoading(false)
-        console.log("stop handler", event)
+        setLoading(false);
+        console.log("stop handler", event);
     };
 
     const onSpeechResultsHandler = (event: any) => {
@@ -62,14 +70,6 @@ const SpeakGame: React.FC<SpeakGameProps> = ({ navigation }) => {
             console.log("error raised", error)
         };
     };
-
-    // const stopRecording = async () => {
-    //     try {
-    //         await Voice.stop()
-    //     } catch (error) {
-    //         console.log("error raised", error)
-    //     };
-    // };
 
     const handleNextWord = () => {
         if (wordCounter === 2) {
@@ -113,22 +113,15 @@ const SpeakGame: React.FC<SpeakGameProps> = ({ navigation }) => {
         <BackgroundImageDefault source={require('../../assets/home_cloud.jpg')}>
             <WrongAnswer wrongWord={wrongWord}>
                 <Text
-                    style={{
-                        fontSize: 14,
-                        width: 200,
-                        color: 'white',
-                        textAlign: 'center',
-                        letterSpacing: 3,
-                        textTransform: 'uppercase'
-                    }}>Palavra incorreta. Tente Novamente!</Text></WrongAnswer>
+                    style={styles.incorrectWord}>Palavra incorreta. Tente Novamente!</Text></WrongAnswer>
             <SpeakGameContainer>
                 <DisplayedWord isCorrect={isCorrect} style={styles.shadowProp}>{wordToShow}</DisplayedWord>
                 <MicrophoneButton disabled={isCorrect} isCorrect={isCorrect} onPress={startRecording}>
-                    <Icon name='microphone' size={34} color={isCorrect ? '#2ee775' : '#09338f'} />
+                    {isLoading ? <ActivityIndicator size='large' color='#2153be' /> : <Icon name='microphone' size={34} color={isCorrect ? '#2ee775' : '#09338f'} />}
                 </MicrophoneButton>
             </SpeakGameContainer>
             <NextWordButton
-                disabled={false}
+                disabled={!isCorrect}
                 isCorrect={isCorrect}
                 onPress={handleNextWord}>
                 <Text style={{ fontSize: 18, color: 'white', textTransform: 'uppercase', letterSpacing: 2 }}>Avançar</Text>

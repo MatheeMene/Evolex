@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
         width: 230,
         height: 150,
         borderRadius: 80,
-        marginBottom: 40,
     }
 });
 
@@ -35,11 +34,12 @@ const InstructionsScreen: React.FC<InstructionsScreenProps> = ({ route, navigati
         <BackgroundImageDefault source={require('../../assets/home_cloud.jpg')}>
             <InstructionContainer>
                 {icon
-                    ? <Icon name={icon} size={150} color='green' />
+                    ? <Icon name={icon} size={150} color='#50df5c' />
                     : <Image source={require('../../assets/airplane.webp')} style={styles.airplaneImage} />
                 }
                 <ExplanationText>{route.params.explanationText}</ExplanationText>
-                <StartGameButton onPress={() => {
+                {/*//@ts-ignore */}
+                <StartGameButton buttomColor={icon} onPress={() => {
                     navigation.navigate({
                         name: nextScreen,
                     });

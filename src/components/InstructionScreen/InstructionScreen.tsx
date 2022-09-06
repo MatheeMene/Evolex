@@ -10,6 +10,7 @@ interface InstructionsScreenProps {
         params: {
             explanationText: string;
             nextScreen: string;
+            buttomText: string;
             icon?: string;
         }
     };
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
 });
 
 const InstructionsScreen: React.FC<InstructionsScreenProps> = ({ route, navigation }) => {
-    const { params: { nextScreen, icon } } = route;
+    const { params: { nextScreen, icon, buttomText } } = route;
 
     return (
         //@ts-ignore
@@ -40,10 +41,17 @@ const InstructionsScreen: React.FC<InstructionsScreenProps> = ({ route, navigati
                 <ExplanationText>{route.params.explanationText}</ExplanationText>
                 {/*//@ts-ignore */}
                 <StartGameButton buttomColor={icon} onPress={() => {
-                    navigation.navigate({
-                        name: nextScreen,
-                    });
-                }}><Text style={{ fontSize: 18, color: 'white' }}>Começar</Text></StartGameButton>
+                    navigation.navigate({ name: nextScreen });
+                }}>
+                    <Text
+                        style={{
+                            fontSize: 15,
+                            color: 'white',
+                            textTransform: 'uppercase',
+                            letterSpacing: 2,
+                        }}>{buttomText}
+                    </Text>
+                </StartGameButton>
             </InstructionContainer>
         </BackgroundImageDefault>
     );

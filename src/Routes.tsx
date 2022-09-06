@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Home from './components/Home/Home';
 import SpeakGame from './components/SpeakGame/SpeakGame';
+import FiguresGame from './components/FiguresGame/FiguresGame';
 import InstructionScreen from './components/InstructionScreen/InstructionScreen';
 
 const Stack = createNativeStackNavigator();
@@ -14,6 +15,7 @@ const Routes: React.FC = () => (
         <Stack.Navigator>
             <Stack.Screen options={{ headerShown: false }} name='Home' component={Home} />
             <Stack.Screen options={{ headerShown: false }} name='SpeakGame' component={SpeakGame} />
+            <Stack.Screen options={{ headerShown: false }} name='FiguresGame' component={FiguresGame} />
             <Stack.Screen options={{ headerShown: false }} name='InstructionScreen' component={InstructionScreen} />
         </Stack.Navigator>
     </NavigationContainer>

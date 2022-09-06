@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, ActivityIndicator, Text } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { LinearProgress } from 'react-native-elements';
 import Voice from '@react-native-community/voice';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
 import Words from './words.json';
 
 import { BackgroundImageDefault } from '../Home/styles';
@@ -43,6 +44,7 @@ const SpeakGame: React.FC<SpeakGameProps> = ({ navigation }) => {
     const [isCorrect, setIsCorrect] = useState<boolean>(false);
     const [wordCounter, setWordCounter] = useState<number>(0);
     const [wrongWord, setWrongWord] = useState<boolean>(false);
+    const [linearProgress, setLinearProgress] = useState<number>(0);
 
     const { words } = Words;
 
@@ -63,7 +65,8 @@ const SpeakGame: React.FC<SpeakGameProps> = ({ navigation }) => {
     };
 
     const startRecording = async () => {
-        setLoading(true)
+        setLoading(true);
+        setWrongWord(false);
         try {
             await Voice.start('pt-BR')
         } catch (error) {
@@ -77,8 +80,9 @@ const SpeakGame: React.FC<SpeakGameProps> = ({ navigation }) => {
                 name: 'InstructionScreen',
                 params: {
                     icon: 'cloud-done',
-                    explanationText: 'Parabéns, você concluiu todas as etapas, continue aperfeiçoando!',
+                    explanationText: 'Parabéns, você concluiu todas as palavras, continue aperfeiçoando!',
                     nextScreen: 'Home',
+                    buttomText: 'Concluir',
                 },
             });
             return;
@@ -105,6 +109,7 @@ const SpeakGame: React.FC<SpeakGameProps> = ({ navigation }) => {
         if (result === wordToShow) {
             setIsCorrect(true);
             setWrongWord(false);
+            setLinearProgress((prevState: number) => prevState + .34);
         }
     }, [result]);
 
@@ -112,19 +117,34 @@ const SpeakGame: React.FC<SpeakGameProps> = ({ navigation }) => {
         //@ts-ignore
         <BackgroundImageDefault source={require('../../assets/home_cloud.jpg')}>
             <WrongAnswer wrongWord={wrongWord}>
-                <Text
-                    style={styles.incorrectWord}>Palavra incorreta. Tente Novamente!</Text></WrongAnswer>
+                <Text style={styles.incorrectWord}>Palavra incorreta. Tente Novamente!</Text>
+            </WrongAnswer>
+            <LinearProgress
+                variant='determinate'
+                color={linearProgress > .99 ? '#2ee775' : '#09338f'}
+                value={linearProgress}
+                style={{ position: 'absolute', width: '65%', top: 200 }}
+            />
             <SpeakGameContainer>
                 <DisplayedWord isCorrect={isCorrect} style={styles.shadowProp}>{wordToShow}</DisplayedWord>
                 <MicrophoneButton disabled={isCorrect} isCorrect={isCorrect} onPress={startRecording}>
-                    {isLoading ? <ActivityIndicator size='large' color='#2153be' /> : <Icon name='microphone' size={34} color={isCorrect ? '#2ee775' : '#09338f'} />}
+                    {isLoading
+                        ? <ActivityIndicator size='large' color='#2153be' />
+                        : <Icon name='microphone' size={34} color={isCorrect ? '#2ee775' : '#09338f'} />}
                 </MicrophoneButton>
             </SpeakGameContainer>
             <NextWordButton
                 disabled={!isCorrect}
                 isCorrect={isCorrect}
                 onPress={handleNextWord}>
-                <Text style={{ fontSize: 18, color: 'white', textTransform: 'uppercase', letterSpacing: 2 }}>Avançar</Text>
+                <Text
+                    style={{
+                        fontSize: 18,
+                        color: 'white',
+                        textTransform: 'uppercase',
+                        letterSpacing: 2,
+                    }}>Avançar
+                </Text>
             </NextWordButton>
         </BackgroundImageDefault>
     );

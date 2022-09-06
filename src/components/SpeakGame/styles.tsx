@@ -16,7 +16,7 @@ export const WrongAnswer = styled.View<StyledProps>`
     width: 250px;
     background-color: #ff8585;
     position: absolute;
-    top: 200px;
+    top: 220px;
     border-radius: 15px;
     display: flex;
     align-items: center;

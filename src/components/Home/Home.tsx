@@ -34,7 +34,14 @@ const Home: React.FC = () => {
             <Image style={styles.icon} source={require('../../assets/icon.png')} />
             <ButtonsContainer>
                 <GameButton>
-                    <Link to={{ screen: 'SpeakGame' }} style={styles.linkStyle}>
+                    <Link to={{
+                        screen: 'InstructionScreen',
+                        params: {
+                            explanationText: 'Nomeie as figuras por extenso o mais rápido que você conseguir!',
+                            nextScreen: 'FiguresGame',
+                            buttomText: 'Começar',
+                        }
+                    }} style={styles.linkStyle}>
                         <ImageButtonContainer>
                             <Image style={styles.NameImage} source={require('../../assets/NomearFiguras.png')} />
                             <ButtonText>FIGURAS</ButtonText>
@@ -47,6 +54,7 @@ const Home: React.FC = () => {
                         params: {
                             explanationText: 'Dê nome as palavras o mais rapido que você conseguir!',
                             nextScreen: 'SpeakGame',
+                            buttomText: 'Começar',
                         }
                     }} style={styles.linkStyle}>
                         <ImageButtonContainer>
